@@ -1,4 +1,4 @@
-package com.infy.respository;
+package com.infy.repository;
 
 import com.infy.dto.CustomerLoginDTO;
 

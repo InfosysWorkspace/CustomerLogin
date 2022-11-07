@@ -1,11 +1,13 @@
-package com.infy.respository;
+package com.infy.repository;
 
 import com.infy.dto.CustomerLoginDTO;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomerLoginRepositoryImpl {
+@Repository(value = "customerLoginRepository")
+public class CustomerLoginRepositoryImpl implements CustomerLoginRepository{
 
     public CustomerLoginDTO getCustomerLoginByName(String loginName){
         Map<String, String> customerCredentials = new HashMap<>();

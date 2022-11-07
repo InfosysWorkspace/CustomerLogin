@@ -1,30 +1,38 @@
 package com.infy.ui;
 
+import com.infy.configuration.SpringConfig;
 import com.infy.controller.CustomerLoginController;
 import com.infy.dto.CustomerLoginDTO;
-import org.apache.commons.configuration2.PropertiesConfiguration;
-import org.apache.commons.configuration2.builder.fluent.Configurations;
+import com.infy.exception.InfyBankException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.Environment;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import javax.security.auth.login.Configuration;
+
 
 public class UserInterface {
 
     private static final Log LOGGER = LogFactory.getLog(UserInterface.class);
     public static void main(String[] args) throws Exception {
 
-        PropertiesConfiguration config = new Configurations().properties("configuration.properties");
+        Environment environment = null;
+        ApplicationContext applicationContext = null;
         try {
-            CustomerLoginDTO customerLoginDTO = new CustomerLoginDTO();
-            customerLoginDTO.setLoginName("harry");
-            customerLoginDTO.setPassword("harry123");
+            applicationContext = new AnnotationConfigApplicationContext(SpringConfig.class);
+            environment = applicationContext.getEnvironment();
 
-            CustomerLoginController customerLoginController = new CustomerLoginController();
-            String message = customerLoginController.authenticateCustomer(customerLoginDTO);
-            LOGGER.info(config.getProperty(message));
-        } catch (Exception exception){
-            LOGGER.info(config.getProperty(exception.getMessage()));
+            CustomerLoginController customerLoginController = applicationContext
+                    .getBean(CustomerLoginController.class);
+            CustomerLoginDTO customerLogin = new CustomerLoginDTO();
+            customerLogin.setLoginName("harry");
+            customerLogin.setPassword("harry123");
+
+            customerLoginController.authenticateCustomer(customerLogin);
+            LOGGER.info(environment.getProperty("SUCCESS"));
+        } catch (InfyBankException exception){
+            LOGGER.error(environment.getProperty(exception.getMessage()));
         }
     }
 }
