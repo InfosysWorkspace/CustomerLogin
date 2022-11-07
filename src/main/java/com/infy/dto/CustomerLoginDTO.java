@@ -20,4 +20,9 @@ public class CustomerLoginDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString(){
+        return "CustomerLoginDTO [loginName = " + loginName + "password = " + password + "]";
+    }
 }
